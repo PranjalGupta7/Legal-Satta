@@ -12,6 +12,9 @@
         android:theme="@style/Theme.LegalSatta"
         tools:targetApi="31">
         <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
