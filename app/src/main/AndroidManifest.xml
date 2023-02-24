@@ -12,7 +12,7 @@
         android:theme="@style/Theme.LegalSatta"
         tools:targetApi="31">
         <activity
-            android:name=".AuthActivity"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
