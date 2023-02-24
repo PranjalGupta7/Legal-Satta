@@ -22,7 +22,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="90dp"
             android:text="Legal Satta"
-            android:textColor="#d62828"
+            android:textColor="@color/dark_red"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -193,7 +193,7 @@
             app:layout_constraintStart_toEndOf="@id/loginText"
             app:layout_constraintBottom_toBottomOf="@id/loginText"
             android:text="Login"
-            android:textColor="#f77f00"
+            android:textColor="@color/dark_orange"
             android:textStyle="bold"
             />
 
