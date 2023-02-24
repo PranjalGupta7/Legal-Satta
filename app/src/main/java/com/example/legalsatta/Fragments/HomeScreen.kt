@@ -41,8 +41,8 @@ class HomeScreen : Fragment() {
 
         var matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
         matchesListView .layoutManager = LinearLayoutManager(context)
-        matchesListView .adapter = upcomingMatchesAdapter(context, //list)
-        )
+//        matchesListView .adapter = upcomingMatchesAdapter(context, //list)
+//        )
         return v;
     }
 

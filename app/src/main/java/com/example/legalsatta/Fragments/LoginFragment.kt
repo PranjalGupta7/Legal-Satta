@@ -1,10 +1,17 @@
 package com.example.legalsatta.Fragments
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import com.example.legalsatta.Activities.HomeActivity
 import com.example.legalsatta.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,31 +37,55 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private lateinit var v: View
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        v = inflater.inflate(R.layout.fragment_login, container, false)
+        val loginEmail = v.findViewById<EditText>(R.id.loginEmail)
+        val loginPassword = v.findViewById<EditText>(R.id.loginPassword)
+        val loginBtn = v.findViewById<TextView>(R.id.loginBtn)
+        val loginToRegisterBtn = v.findViewById<TextView>(R.id.loginToRegisterBtn)
+        val sharedPef = activity?.getSharedPreferences(getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE)
+
+        checkUserAlreadyExists()
+
+        Log.d("Email", sharedPef?.getString("Email",null).toString())
+        Log.d("Password", sharedPef?.getString("Password",null).toString())
+
+        loginBtn?.setOnClickListener {
+            if(checkCredentials(loginEmail.text.toString(), loginPassword.text.toString()))
+                activity?.startActivity(Intent(activity, HomeActivity::class.java))
+            else
+                Toast.makeText(activity,"Wrong Credentials", Toast.LENGTH_SHORT).show()
+        }
+
+        loginToRegisterBtn.setOnClickListener {
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.authFrame, RegisterFragment())
+                ?.addToBackStack(null)
+                ?.commit()
+        }
+        return v
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun checkCredentials(e: String, p: String): Boolean{
+        val sharedPef = activity?.getSharedPreferences(getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE)
+        return e==sharedPef?.getString("Email",null)
+                && p==sharedPef?.getString("Password",null)
     }
+
+    fun checkUserAlreadyExists(){
+        val sharedPef = activity?.getSharedPreferences(getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE)
+        if(sharedPef?.getString("API Key", null)!=null)
+            activity?.startActivity(Intent(activity, HomeActivity::class.java))
+    }
+
+
 }
