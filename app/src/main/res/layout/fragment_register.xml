@@ -136,6 +136,7 @@
             android:id="@+id/passwordTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@id/passwordText"
             app:layout_constraintTop_toBottomOf="@id/passwordText"
             android:layout_marginLeft="28dp"
@@ -166,6 +167,7 @@
             android:id="@+id/confirmPasswordTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@id/passwordText"
             app:layout_constraintTop_toBottomOf="@id/confirmPasswordText"
             android:layout_marginLeft="28dp"
@@ -209,7 +211,7 @@
             />
 
         <TextView
-            android:id="@+id/loginpage"
+            android:id="@+id/loginToRegisterBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/loginText"

@@ -1,3 +1,14 @@
 package com.example.legalsatta.Models
 
-data class RegistrationModel(var email: String, var username: String, var password: String)
+import com.google.gson.annotations.SerializedName
+
+data class RegistrationModel(
+    @SerializedName("email")
+    val email: String,
+    @SerializedName("password")
+    val password: String,
+    @SerializedName("username")
+    val username: String,
+    @SerializedName("name")
+    val name: String
+    )

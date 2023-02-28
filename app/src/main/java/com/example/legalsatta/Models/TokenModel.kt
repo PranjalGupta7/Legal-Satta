@@ -1,3 +1,3 @@
 package com.example.legalsatta.Models
 
-data class TokenModel(var token: String)
+data class TokenModel(var status: String, var token: String)

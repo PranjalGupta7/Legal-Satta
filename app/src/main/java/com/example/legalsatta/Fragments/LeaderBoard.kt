@@ -1,5 +1,6 @@
 package com.example.legalsatta.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,7 +24,7 @@ class LeaderBoard : Fragment() {
 
         var rankListView = v.findViewById<RecyclerView>(R.id.recycleViewLeaderboard)
         rankListView .layoutManager = LinearLayoutManager(context)
-        rankListView .adapter = leaderboardAdapter(context, //list)
+//        rankListView .adapter = leaderboardAdapter(context, //list)
 
             return v;
     }
