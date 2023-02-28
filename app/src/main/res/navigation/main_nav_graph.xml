@@ -10,11 +10,13 @@
         android:name="com.example.legalsatta.Fragments.HomeScreen"
         android:label="fragment_home_screen"
         tools:layout="@layout/fragment_home_screen" />
+
     <fragment
         android:id="@+id/leaderBoard"
         android:name="com.example.legalsatta.Fragments.LeaderBoard"
         android:label="fragment_leader_board"
         tools:layout="@layout/fragment_leader_board" />
+
     <fragment
         android:id="@+id/userProfile"
         android:name="com.example.legalsatta.Fragments.UserProfile"

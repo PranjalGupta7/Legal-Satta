@@ -8,26 +8,18 @@
     android:gravity="center">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/appLogo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="100dp"
+        android:drawablePadding="10dp"
+        android:drawableEnd="@drawable/baseline_diamond_24"
         android:text="LEGAL SATTA"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_diamond_24"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="230dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,5 +23,4 @@ interface UrlEndpoints {
     @GET("/match/latest")
     suspend fun getLatestMatch() : Response<LatestMatchs>
 
-
 }

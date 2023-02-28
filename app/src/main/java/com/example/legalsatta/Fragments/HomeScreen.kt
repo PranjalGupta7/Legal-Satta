@@ -34,7 +34,6 @@ import kotlin.collections.ArrayList
 
 class HomeScreen : Fragment() {
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,34 +45,22 @@ class HomeScreen : Fragment() {
         val teamImg1 = v.findViewById<ImageView>(R.id.teamImg1)
         val teamImg2 = v.findViewById<ImageView>(R.id.teamImg2)
         val predictNowBtn = v.findViewById<TextView>(R.id.predictNowBtn)
+        val retrofit = RetrofitClass.buildService()
 
-            val retrofit = RetrofitClass.buildService()
-            lifecycleScope.launchWhenCreated {
-                try {
-
-                    val response= retrofit.getLatestMatch()
-                    print(response.body())
-                    if (response.isSuccessful) {
-                            Glide
-                                .with(this@HomeScreen)
-                                .load(response.body()?.result?.team1?.get(0)?.coverimg)
-                                .fitCenter()
-                                .placeholder(R.drawable.ic_launcher_foreground)
-                                .into(teamImg1);
-
-                            Glide
-                                .with(this@HomeScreen)
-                                .load(response.body()?.result?.team2?.get(0)?.coverimg)
-                                .fitCenter()
-                                .placeholder(R.drawable.ic_launcher_foreground)
-                                .into(teamImg2);
-                    } else {
-                        Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
-                    }
-                }catch (e :Exception){
-                    Log.e("Error",e.localizedMessage)
+        lifecycleScope.launchWhenCreated {
+            try {
+                val response= retrofit.getLatestMatch()
+                if (response.isSuccessful) {
+                    setImage(teamImg1, response.body()?.result?.team1?.get(0)?.coverimg.toString())
+                    setImage(teamImg2, response.body()?.result?.team2?.get(0)?.coverimg.toString())
                 }
+                else {
+                    Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
+                }
+            }catch (e :Exception){
+                Log.e("Error",e.localizedMessage)
             }
+        }
 
 
 
