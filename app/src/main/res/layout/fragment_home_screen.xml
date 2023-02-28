@@ -61,7 +61,6 @@
                      android:layout_margin="26dp"
                      android:layout_marginStart="16dp"
                      android:layout_marginTop="24dp"
-                     android:background="@drawable/round_img"
                      android:src="@drawable/ic_launcher_foreground"
                      app:layout_constraintStart_toStartOf="parent"
                      app:layout_constraintTop_toTopOf="parent" />
@@ -71,7 +70,6 @@
                      android:layout_width="wrap_content"
                      android:layout_height="100dp"
                      android:layout_margin="26dp"
-                     android:background="@drawable/round_img"
                      android:src="@drawable/ic_launcher_foreground"
                      app:layout_constraintEnd_toEndOf="parent"
                      app:layout_constraintTop_toTopOf="parent" />

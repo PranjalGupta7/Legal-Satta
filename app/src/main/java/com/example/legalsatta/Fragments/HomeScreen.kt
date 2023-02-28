@@ -41,18 +41,22 @@ class HomeScreen : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_home_screen, container, false)
-
         val teamImg1 = v.findViewById<ImageView>(R.id.teamImg1)
         val teamImg2 = v.findViewById<ImageView>(R.id.teamImg2)
         val predictNowBtn = v.findViewById<TextView>(R.id.predictNowBtn)
         val retrofit = RetrofitClass.buildService()
 
+        var imgTeam1: String? = null
+        var imgTeam2: String? = null
+
         lifecycleScope.launchWhenCreated {
             try {
                 val response= retrofit.getLatestMatch()
                 if (response.isSuccessful) {
-                    setImage(teamImg1, response.body()?.result?.team1?.get(0)?.coverimg.toString())
-                    setImage(teamImg2, response.body()?.result?.team2?.get(0)?.coverimg.toString())
+                    imgTeam1 =  response.body()?.result?.team1?.get(0)?.coverimg.toString()
+                    imgTeam2 =  response.body()?.result?.team1?.get(0)?.coverimg.toString()
+                    setImage(teamImg1, imgTeam1!!)
+                    setImage(teamImg2, imgTeam2!!)
                 }
                 else {
                     Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
@@ -65,7 +69,7 @@ class HomeScreen : Fragment() {
 
 
         predictNowBtn.setOnClickListener {
-            activity?.let { it1 -> showDialogBox(it1) }
+            activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!) }
         }
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
@@ -104,7 +108,7 @@ class HomeScreen : Fragment() {
         return v;
     }
 
-    private fun showDialogBox(activity: Activity){
+    private fun showDialogBox(activity: Activity, imgTeam1: String, imgTeam2: String){
         val dialog = Dialog(activity)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dailog_box_team_selection)
@@ -112,8 +116,8 @@ class HomeScreen : Fragment() {
         val team2 = dialog.findViewById<ImageView>(R.id.dialog_team2)
         val dialog_cnf_btn = dialog.findViewById<TextView>(R.id.dialog_cnf_btn)
 
-        setImage(team1,"")
-        setImage(team2,"")
+        setImage(team1,imgTeam1)
+        setImage(team2,imgTeam2)
         team1.setOnClickListener {
             team1.background = resources.getDrawable(R.drawable.orange_stroke_boder)
             team2.background = null
