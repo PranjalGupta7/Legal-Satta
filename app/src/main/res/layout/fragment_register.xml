@@ -167,7 +167,6 @@
             android:id="@+id/confirmPasswordTextBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             app:layout_constraintStart_toStartOf="@id/passwordText"
             app:layout_constraintTop_toBottomOf="@id/confirmPasswordText"
             android:layout_marginLeft="28dp"

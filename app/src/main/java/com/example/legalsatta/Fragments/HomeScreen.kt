@@ -1,5 +1,7 @@
 package com.example.legalsatta.Fragments
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -7,8 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -83,7 +87,7 @@ class HomeScreen : Fragment() {
             .into(teamImg2);
 
         predictNowBtn.setOnClickListener {
-
+            activity?.let { it1 -> showDialogBox(it1) }
         }
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
@@ -115,6 +119,39 @@ class HomeScreen : Fragment() {
 //        matchesListView .adapter = upcomingMatchesAdapter(context, //list)
 //        )
         return v;
+    }
+
+    private fun showDialogBox(activity: Activity){
+        val dialog = Dialog(activity)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dailog_box_team_selection)
+        val team1 = dialog.findViewById<ImageView>(R.id.dialog_team1)
+        val team2 = dialog.findViewById<ImageView>(R.id.dialog_team2)
+        val dialog_cnf_btn = dialog.findViewById<TextView>(R.id.dialog_cnf_btn)
+
+        setImage(team1,"")
+        setImage(team2,"")
+        team1.setOnClickListener {
+            team1.background = resources.getDrawable(R.drawable.orange_stroke_boder)
+            team2.background = null
+        }
+        team2.setOnClickListener {
+            team2.background = resources.getDrawable(R.drawable.orange_stroke_boder)
+            team1.background = null
+        }
+        dialog_cnf_btn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+
+    }
+
+    private fun setImage(imageView: ImageView, imgURl: String){
+        Glide
+            .with(this)
+            .load(imgURl)
+            .placeholder(R.drawable.ic_launcher_foreground)
+            .into(imageView)
     }
 
     class upcomingMatchesAdapter(var context: Context, var MatchList: ArrayList<UpcomingMatches>) : RecyclerView.Adapter<upcomingMatchesAdapter.MatchViewHolder>(){
