@@ -17,7 +17,7 @@ object RetrofitClass {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://c395-125-20-24-2.in.ngrok.io")
+        .baseUrl("https://8b23-125-20-24-2.in.ngrok.io")
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)

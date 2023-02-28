@@ -3,6 +3,7 @@ package com.example.legalsatta.Fragments
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -15,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,10 +28,13 @@ import com.example.legalsatta.Services.RetrofitClass
 import retrofit2.Retrofit
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeScreen : Fragment() {
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +50,9 @@ class HomeScreen : Fragment() {
             val retrofit = RetrofitClass.buildService()
             lifecycleScope.launchWhenCreated {
                 try {
+
                     val response= retrofit.getLatestMatch()
+                    print(response.body())
                     if (response.isSuccessful) {
                             Glide
                                 .with(this@HomeScreen)
@@ -69,22 +76,6 @@ class HomeScreen : Fragment() {
             }
 
 
-        val teamImg1 = v.findViewById<ImageView>(R.id.teamImg1)
-        val teamImg2 = v.findViewById<ImageView>(R.id.teamImg2)
-        val predictNowBtn = v.findViewById<TextView>(R.id.predictNowBtn)
-
-        Glide
-            .with(this)
-            .load("https://i.pinimg.com/736x/70/15/05/701505a5bbe24320e3c33f26808cdaac.jpg")
-            .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(teamImg1);
-        Glide
-            .with(this)
-            .load("https://i.pinimg.com/474x/9b/c1/5b/9bc15be6369be54c64d032cd68a5526a.jpg")
-            .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(teamImg2);
 
         predictNowBtn.setOnClickListener {
             activity?.let { it1 -> showDialogBox(it1) }
@@ -93,7 +84,12 @@ class HomeScreen : Fragment() {
         var timerTextView = v.findViewById<TextView>(R.id.timer)
 
          var currentTime = System.currentTimeMillis();
-         var timeForCountDown =  currentTime - 59400000 ;
+         val now1 = Calendar.getInstance()
+         val now2 = Calendar.getInstance()
+         now2.set(now1.weekYear, now1.time.month, now1.time.date, 16, 30,0)
+         var epoch = now2.timeInMillis
+         var timeForCountDown = epoch - currentTime ;
+
         Log.d("------", currentTime.toString())
         Log.d("-----t", timeForCountDown.toString())
 
