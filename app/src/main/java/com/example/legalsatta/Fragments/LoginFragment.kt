@@ -11,8 +11,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.legalsatta.Activities.HomeActivity
+import com.example.legalsatta.Models.LoginModel
+import com.example.legalsatta.Models.RegistrationModel
 import com.example.legalsatta.R
+import com.example.legalsatta.Services.RetrofitClass
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,13 +33,13 @@ class LoginFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.let {
+//            param1 = it.getString(ARG_PARAM1)
+//            param2 = it.getString(ARG_PARAM2)
+//        }
+//    }
 
     private lateinit var v: View
 
@@ -44,23 +48,29 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_login, container, false)
-        val loginEmail = v.findViewById<EditText>(R.id.loginEmail)
-        val loginPassword = v.findViewById<EditText>(R.id.loginPassword)
         val loginBtn = v.findViewById<TextView>(R.id.loginBtn)
         val loginToRegisterBtn = v.findViewById<TextView>(R.id.loginToRegisterBtn)
-        val sharedPef = activity?.getSharedPreferences(getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE)
+//        val sharedPef = activity?.getSharedPreferences(
+//            getString(R.string.preference_file_key),
+//            Context.MODE_PRIVATE
+//        )
 
-        checkUserAlreadyExists()
+//        checkUserAlreadyExists()
 
-        Log.d("Email", sharedPef?.getString("Email",null).toString())
-        Log.d("Password", sharedPef?.getString("Password",null).toString())
+//        Log.d("Email", sharedPef?.getString("Email", null).toString())
+//        Log.d("Password", sharedPef?.getString("Password", null).toString())
 
         loginBtn?.setOnClickListener {
-            if(checkCredentials(loginEmail.text.toString(), loginPassword.text.toString()))
-                activity?.startActivity(Intent(activity, HomeActivity::class.java))
-            else
-                Toast.makeText(activity,"Wrong Credentials", Toast.LENGTH_SHORT).show()
+
+            val loginEmail = v.findViewById<EditText>(R.id.loginEmail).text.toString()
+            val loginPassword = v.findViewById<EditText>(R.id.loginPassword).text.toString()
+            if (loginEmail.isEmpty()
+                || loginPassword.isEmpty()
+            ) {
+                Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+            } else {
+                loginUser(LoginModel(loginEmail, loginPassword))
+            }
         }
 
         loginToRegisterBtn.setOnClickListener {
@@ -73,17 +83,50 @@ class LoginFragment : Fragment() {
         return v
     }
 
-    fun checkCredentials(e: String, p: String): Boolean{
-        val sharedPef = activity?.getSharedPreferences(getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE)
-        return e==sharedPef?.getString("Email",null)
-                && p==sharedPef?.getString("Password",null)
+
+    fun loginUser(userData: LoginModel) {
+
+
+        lifecycleScope.launchWhenCreated {
+            try {
+                val response = RetrofitClass.buildService().postLoginDetails(userData)
+                if (response.isSuccessful) {
+                    val token = response.body()!!.token.toString()
+                    Log.i("token", "registerUser: $token")
+
+                    var pref = activity?.getSharedPreferences(
+                        getString(R.string.preference_file_key),
+                        Context.MODE_PRIVATE
+                    )?.edit()
+
+                    pref?.putString("token", token)
+                    startActivity(Intent(context, HomeActivity::class.java))
+
+                }
+            } catch (e: Exception) {
+                Log.e("Error", e.localizedMessage)
+            }
+        }
     }
 
-    fun checkUserAlreadyExists(){
-        val sharedPef = activity?.getSharedPreferences(getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE)
-        if(sharedPef?.getString("API Key", null)!=null)
+    fun checkCredentials(e: String, p: String): Boolean {
+        val sharedPef = activity?.getSharedPreferences(
+            getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        return e == sharedPef?.getString("Email", null)
+                && p == sharedPef.getString("Password", null)
+    }
+
+    fun checkUserAlreadyExists() {
+        val sharedPef = activity?.getSharedPreferences(
+            getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        val token = sharedPef?.getString("token", "")
+        Log.i("credential", "checkUserAlreadyExists: ${token} hbyug")
+
+        if (token != "")
             activity?.startActivity(Intent(activity, HomeActivity::class.java))
     }
 

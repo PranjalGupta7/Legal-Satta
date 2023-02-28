@@ -105,7 +105,7 @@ class HomeScreen : Fragment() {
         matchesListView .layoutManager = LinearLayoutManager(context)
 //        matchesListView .adapter = upcomingMatchesAdapter(context, //list)
 //        )
-        return v;
+        return v
     }
 
     private fun showDialogBox(activity: Activity, imgTeam1: String, imgTeam2: String){

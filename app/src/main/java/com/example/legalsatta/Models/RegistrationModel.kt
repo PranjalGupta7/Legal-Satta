@@ -12,3 +12,10 @@ data class RegistrationModel(
     @SerializedName("name")
     val name: String
     )
+
+data class LoginModel(
+    @SerializedName("email")
+    val email: String,
+    @SerializedName("password")
+    val password: String,
+)

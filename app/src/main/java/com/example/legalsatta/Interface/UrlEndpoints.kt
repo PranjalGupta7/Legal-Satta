@@ -14,8 +14,8 @@ import retrofit2.http.Query
 
 interface UrlEndpoints {
 
-    @GET("/user/user-exist/{username}")
-    suspend fun getUsernameAuthentication(@Path("username") username: String): Response<UsernameVerificationModel>
+//    @GET("/user/user-exist/{username}")
+//    suspend fun getUsernameAuthentication(@Path("username") username: String): Response<UsernameVerificationModel>
 
     @POST("/auth/signup")
     suspend fun postRegistrationDetails(@Body userRegistrationModel: RegistrationModel): Response<TokenModel>
@@ -25,5 +25,11 @@ interface UrlEndpoints {
 
 //    @GET("/match/upcoming")
 //    suspend fun getUpcomingMatches(): Response<>
+    @POST("/auth/login")
+    suspend fun postLoginDetails(@Body userLoginModel: LoginModel): Response<TokenModel>
+
+    @GET("/leaderboard/get")
+    suspend fun getLeaderBoardList(): Response<LeaderBoardUserListModel>
+
 
 }
