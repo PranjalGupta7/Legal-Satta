@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.legalsatta.Fragments.HomeScreen
+import com.example.legalsatta.Fragments.LeaderBoard
+import com.example.legalsatta.Fragments.UserProfile
 import com.example.legalsatta.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.sql.Timestamp
@@ -22,14 +24,27 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         val homeBottomNavigator = findViewById<BottomNavigationView>(R.id.homeBottomNavigator)
-        val navController = this.findNavController(R.id.homeNavFrame)
+//        val navController = this.findNavController(R.id.homeNavFrame)
 
 //        homeBottomNavigator.setupWithNavController(navController)
-//        homeBottomNavigator.setOnItemSelectedListener{ menuItem: MenuItem ->
-//            when(menuItem.itemId){
-//                R.id.home_fragment-> { frameTransaction(HomeScreen())}
-//            }
-//        }
+        homeBottomNavigator.setOnItemSelectedListener{ menuItem: MenuItem ->
+            when(menuItem.itemId){
+                R.id.home_fragment-> {
+                    frameTransaction(HomeScreen())
+                    true
+                }
+                R.id.leaderBoard_fragment->{
+                    frameTransaction(LeaderBoard())
+                    true
+                }
+                R.id.profile_fragment->{
+                    frameTransaction(UserProfile())
+                    true
+                }
+                else -> false
+            }
+        }
+        val f = HomeScreen()
     }
 
     fun frameTransaction(fragment: Fragment){

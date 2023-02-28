@@ -22,11 +22,11 @@ class LeaderBoard : Fragment() {
         var v = inflater.inflate(R.layout.fragment_leader_board, container, false)
 
 
-        var rankListView = v.findViewById<RecyclerView>(R.id.recycleViewLeaderboard)
-        rankListView .layoutManager = LinearLayoutManager(context)
+//        var rankListView = v.findViewById<RecyclerView>(R.id.recycleViewLeaderboard)
+//        rankListView .layoutManager = LinearLayoutManager(context)
 //        rankListView .adapter = leaderboardAdapter(context, //list)
 
-            return v;
+        return v;
     }
 
     class leaderboardAdapter(var context: Context, var leaderboardList: ArrayList<Leaderboard>) : RecyclerView.Adapter<leaderboardAdapter.rankViewHolder>(){
