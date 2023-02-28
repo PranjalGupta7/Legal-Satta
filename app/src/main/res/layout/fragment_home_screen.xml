@@ -89,6 +89,7 @@
                      app:layout_constraintTop_toTopOf="@id/teamImg2" />
 
                  <TextView
+                     android:id="@+id/predictNowBtn"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:background="@drawable/primary_btn"
@@ -119,10 +120,12 @@
 
          <androidx.recyclerview.widget.RecyclerView
              android:id="@+id/recycleViewUpcomingMatches"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:layout_height="match_parent"
              android:padding="16dp"
              app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintBottom_toBottomOf="parent"
              app:layout_constraintTop_toBottomOf="@id/upcoming"
              />
      </androidx.constraintlayout.widget.ConstraintLayout>
