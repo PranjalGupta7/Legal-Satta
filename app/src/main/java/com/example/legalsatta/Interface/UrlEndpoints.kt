@@ -1,6 +1,7 @@
 package com.example.legalsatta.Interface
 
 import android.database.Observable
+import com.example.legalsatta.Models.LatestMatchs
 import com.example.legalsatta.Models.RegistrationModel
 import com.example.legalsatta.Models.TokenModel
 import com.example.legalsatta.Models.UsernameVerificationModel
@@ -18,4 +19,9 @@ interface UrlEndpoints {
 
     @POST("/auth/signup")
     suspend fun postRegistrationDetails(@Body userRegistrationModel: RegistrationModel): Response<TokenModel>
+
+    @GET("/match/latest")
+    suspend fun getLatestMatch() : Response<LatestMatchs>
+
+
 }

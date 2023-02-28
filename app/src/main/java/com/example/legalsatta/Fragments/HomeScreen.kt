@@ -3,21 +3,28 @@ package com.example.legalsatta.Fragments
 import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.legalsatta.Interface.UrlEndpoints
 import com.example.legalsatta.R
+import com.example.legalsatta.Services.RetrofitClass
+import retrofit2.Retrofit
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
 
 class HomeScreen : Fragment() {
+
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,25 +32,46 @@ class HomeScreen : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_home_screen, container, false)
-           val teamImg1 = v.findViewById<ImageView>(R.id.teamImg1)
-           val teamImg2 = v.findViewById<ImageView>(R.id.teamImg2)
-        Glide
-            .with(this)
-            .load("https://i.pinimg.com/736x/70/15/05/701505a5bbe24320e3c33f26808cdaac.jpg")
-            .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(teamImg1);
-        Glide
-            .with(this)
-            .load("https://i.pinimg.com/474x/9b/c1/5b/9bc15be6369be54c64d032cd68a5526a.jpg")
-            .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(teamImg2);
+
+            val teamImg1 = v.findViewById<ImageView>(R.id.teamImg1)
+            val teamImg2 = v.findViewById<ImageView>(R.id.teamImg2)
+            val retrofit = RetrofitClass.buildService()
+            lifecycleScope.launchWhenCreated {
+                try {
+                    val response= retrofit.getLatestMatch()
+                    if (response.isSuccessful) {
+                            Glide
+                                .with(this@HomeScreen)
+                                .load(response.body()?.result?.team1?.get(0)?.coverimg)
+                                .fitCenter()
+                                .placeholder(R.drawable.ic_launcher_foreground)
+                                .into(teamImg1);
+
+                            Glide
+                                .with(this@HomeScreen)
+                                .load(response.body()?.result?.team2?.get(0)?.coverimg)
+                                .fitCenter()
+                                .placeholder(R.drawable.ic_launcher_foreground)
+                                .into(teamImg2);
+                    } else {
+                        Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
+                    }
+                }catch (e :Exception){
+                    Log.e("Error",e.localizedMessage)
+                }
+            }
+
+
 
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
 
-        object : CountDownTimer(50000, 1000) {
+         var currentTime = System.currentTimeMillis();
+         var timeForCountDown =  currentTime - 59400000 ;
+        Log.d("------", currentTime.toString())
+        Log.d("-----t", timeForCountDown.toString())
+
+        object : CountDownTimer(timeForCountDown, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
 
@@ -66,6 +94,7 @@ class HomeScreen : Fragment() {
 //        )
         return v;
     }
+
 
     class upcomingMatchesAdapter(var context: Context, var MatchList: ArrayList<UpcomingMatches>) : RecyclerView.Adapter<upcomingMatchesAdapter.MatchViewHolder>(){
 
