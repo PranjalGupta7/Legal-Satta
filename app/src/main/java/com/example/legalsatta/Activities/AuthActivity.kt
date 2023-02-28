@@ -1,5 +1,6 @@
 package com.example.legalsatta.Activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.legalsatta.Fragments.LoginFragment
@@ -10,9 +11,11 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.authFrame, LoginFragment())
-            .commit()
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.authFrame, LoginFragment())
+//            .commit()
+
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 }
