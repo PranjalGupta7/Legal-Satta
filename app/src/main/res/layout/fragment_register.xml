@@ -178,6 +178,7 @@
             android:textColorHint="@color/black"
             android:hint="Confirm password"
             android:autofillHints="password"
+            android:inputType="textPassword"
             />
 
         <TextView

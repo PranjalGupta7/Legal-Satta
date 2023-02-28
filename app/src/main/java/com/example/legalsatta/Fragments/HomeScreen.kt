@@ -1,18 +1,21 @@
 package com.example.legalsatta.Fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.legalsatta.R
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
 
 class HomeScreen : Fragment() {
     override fun onCreateView(
@@ -38,6 +41,24 @@ class HomeScreen : Fragment() {
             .into(teamImg2);
 
 
+        var timerTextView = v.findViewById<TextView>(R.id.timer)
+
+        object : CountDownTimer(50000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+
+                val f: NumberFormat = DecimalFormat("00")
+                val hour = millisUntilFinished / 3600000 % 24
+                val min = millisUntilFinished / 60000 % 60
+                val sec = millisUntilFinished / 1000 % 60
+                timerTextView.setText(
+                    (f.format(hour) + ":" + f.format(min)).toString() + ":" + f.format(sec)
+                )
+            }
+            override fun onFinish() {
+                timerTextView.setText("00:00:00")
+            }
+        }.start()
 
         var matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
         matchesListView .layoutManager = LinearLayoutManager(context)
