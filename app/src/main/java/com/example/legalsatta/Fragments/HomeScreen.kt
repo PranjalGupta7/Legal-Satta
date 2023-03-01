@@ -25,6 +25,8 @@ import com.example.legalsatta.Models.Results
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
 import okhttp3.internal.UTC
+import com.example.legalsatta.R
+import com.example.legalsatta.Services.RetrofitClass
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat

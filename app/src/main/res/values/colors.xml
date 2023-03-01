@@ -12,4 +12,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#39FF00</color>
     <color name="light_black">#9F8C8A8A</color>
+    <color name="gold">#efbf4f</color>
+    <color name="silver">#dfdfdf</color>
+    <color name="bronze">#FFba8c</color>
 </resources>

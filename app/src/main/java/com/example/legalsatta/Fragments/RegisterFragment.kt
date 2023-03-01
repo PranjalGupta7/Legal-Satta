@@ -19,7 +19,9 @@ import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import com.example.legalsatta.Activities.HomeActivity
 import com.example.legalsatta.Models.RegistrationModel
+import com.example.legalsatta.Models.User
 import com.example.legalsatta.Models.UsernameVerificationModel
+import com.example.legalsatta.Models.loginedUser
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,7 +44,13 @@ class RegisterFragment : Fragment() {
         val cnfRegisterPassword = v.findViewById<EditText>(R.id.confirmPasswordTextBox)
         val verifyUsernameBtn = v.findViewById<TextView>(R.id.verifyUsernameBtn)
         val registerBtn = v.findViewById<TextView>(R.id.registerBtn)
-//        val registerToLogin = v.findViewById<TextView>(R.id.registerTo)
+        v.findViewById<TextView>(R.id.loginToRegisterBtn).setOnClickListener{
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.authFrame, LoginFragment())
+                ?.addToBackStack(null)
+                ?.commit()
+        }
 
 
         registerBtn.setOnClickListener {
@@ -111,7 +119,8 @@ class RegisterFragment : Fragment() {
             try {
                 val response = RetrofitClass.buildService().postRegistrationDetails(userData)
                 if (response.isSuccessful) {
-                    val token = response.body()!!.token.toString()
+                    loginedUser= response.body()!!.user
+                    val token = response.body()!!.user.token.toString()
                     Log.i("token", "registerUser: $token")
 
                     var pref = activity?.getSharedPreferences(
@@ -119,7 +128,7 @@ class RegisterFragment : Fragment() {
                         Context.MODE_PRIVATE
                     )?.edit()
 
-                    pref?.putString("token", token)
+                    pref?.putString("token", token)?.commit()
                     startActivity(Intent(context, HomeActivity::class.java))
 
                 }

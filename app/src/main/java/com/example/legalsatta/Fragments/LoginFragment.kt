@@ -13,10 +13,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.legalsatta.Activities.HomeActivity
-import com.example.legalsatta.Models.LoginModel
-import com.example.legalsatta.Models.RegistrationModel
+import com.example.legalsatta.Models.*
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
 //            Context.MODE_PRIVATE
 //        )
 
-//        checkUserAlreadyExists()
+        checkUserAlreadyExists()
 
 //        Log.d("Email", sharedPef?.getString("Email", null).toString())
 //        Log.d("Password", sharedPef?.getString("Password", null).toString())
@@ -69,7 +69,7 @@ class LoginFragment : Fragment() {
             ) {
                 Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
             } else {
-                loginUser(LoginModel(loginEmail, loginPassword))
+                loginUser(LoginModel(loginEmail, loginPassword), null)
             }
         }
 
@@ -84,14 +84,20 @@ class LoginFragment : Fragment() {
     }
 
 
-    fun loginUser(userData: LoginModel) {
+    fun loginUser(userData: LoginModel?, token: String?) {
 
 
         lifecycleScope.launchWhenCreated {
+            var response: Response<GetUser>
             try {
-                val response = RetrofitClass.buildService().postLoginDetails(userData)
+                val retroService = RetrofitClass.buildService()
+                if (token != null) {
+                    response = retroService.verifyUser(TokenBody(token));
+                } else {
+                    response = retroService.postLoginDetails(userData!!)
+                }
                 if (response.isSuccessful) {
-                    val token = response.body()!!.token.toString()
+                    val token = response.body()!!.user.token.toString()
                     Log.i("token", "registerUser: $token")
 
                     var pref = activity?.getSharedPreferences(
@@ -100,6 +106,9 @@ class LoginFragment : Fragment() {
                     )?.edit()
 
                     pref?.putString("token", token)
+//                    var intent=Intent(context,HomeActivity::class.java)
+//                    intent.put
+                    loginedUser = response.body()!!.user
                     startActivity(Intent(context, HomeActivity::class.java))
 
                 }
@@ -126,8 +135,11 @@ class LoginFragment : Fragment() {
         val token = sharedPef?.getString("token", "")
         Log.i("credential", "checkUserAlreadyExists: ${token} hbyug")
 
-        if (token != "")
-            activity?.startActivity(Intent(activity, HomeActivity::class.java))
+        if (token != "") {
+//            activity?.startActivity(Intent(activity, HomeActivity::class.java))
+            loginUser(null, token!!)
+
+        }
     }
 
 
