@@ -18,4 +18,13 @@
         <item name="cornerRadius">10dp</item>
     </style>
 
+    <style name="Theme.LegalSatta.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.LegalSatta.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.LegalSatta.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

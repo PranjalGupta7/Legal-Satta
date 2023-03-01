@@ -1,8 +1,10 @@
 package com.example.legalsatta.Fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -13,6 +15,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +34,7 @@ import kotlin.collections.ArrayList
 
 class HomeScreen : Fragment() {
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +48,7 @@ class HomeScreen : Fragment() {
         val retrofit = RetrofitClass.buildService()
         val matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
         val mainCard = v.findViewById<View>(R.id.mainCard)
-        val mainCardProgressBar = v.findViewById<ProgressBar>(R.id.mainCardProgressBar)
+//        val mainCardProgressBar = v.findViewById<ProgressBar>(R.id.mainCardProgressBar)
         val recyclerViewProgressBar = v.findViewById<ProgressBar>(R.id.recyclerViewProgressBar)
 
         val c = context
@@ -58,9 +62,10 @@ class HomeScreen : Fragment() {
 
         lifecycleScope.launchWhenCreated {
             try {
-                mainCardProgressBar.visibility = View.GONE
+//                mainCardProgressBar.visibility = View.GONE
                 val response= retrofit.getLatestMatch()
                 if (response.isSuccessful) {
+
                     imgTeam1 =  response.body()?.result?.team1?.coverimg.toString()
                     imgTeam2 =  response.body()?.result?.team2?.coverimg.toString()
                     Log.d("RespoCheck","Got response")
@@ -69,6 +74,10 @@ class HomeScreen : Fragment() {
                     predictNowBtn.setOnClickListener {
                         activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!) }
                     }
+
+                    setImage(context, teamImg1, response.body()?.result?.team1?.coverimg.toString())
+                    setImage(context, teamImg2, response.body()?.result?.team2?.coverimg.toString())
+
                 }
                 else {
                     Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
@@ -77,6 +86,7 @@ class HomeScreen : Fragment() {
                 Log.e("Error",e.localizedMessage)
             }
         }
+
 
         lifecycleScope.launchWhenCreated {
             try {
@@ -94,7 +104,6 @@ class HomeScreen : Fragment() {
             }
         }
 
-
         var timerTextView = v.findViewById<TextView>(R.id.timer)
 
          var currentTime = System.currentTimeMillis();
@@ -105,8 +114,10 @@ class HomeScreen : Fragment() {
          var timeForCountDown = epoch - currentTime ;
 
 
+
         object : CountDownTimer(timeForCountDown, 1000) {
 
+            @SuppressLint("MissingInflatedId")
             override fun onTick(millisUntilFinished: Long) {
 
                 val f: NumberFormat = DecimalFormat("00")
@@ -116,13 +127,35 @@ class HomeScreen : Fragment() {
                 timerTextView.setText(
                     (f.format(hour) + ":" + f.format(min)).toString() + ":" + f.format(sec)
                 )
+
             }
             override fun onFinish() {
-                timerTextView.setText("00:00:00")
+
+                var currentTime = System.currentTimeMillis();
+                val now1 = Calendar.getInstance()
+                val now2 = Calendar.getInstance()
+                now2.set(now1.weekYear, now1.time.month, now1.time.date, 20, 0,0)
+                var epochateight = now2.timeInMillis
+
+                if(epochateight == currentTime){
+
+                }
+
+                predictNowBtn.visibility = View.GONE
+                val userPredictionChoice = v.findViewById<TextView>(R.id.userPredictionDetail)
+                userPredictionChoice.visibility = View.VISIBLE
+                timerTextView.visibility = View.GONE
+                val textForResult = v.findViewById<TextView>(R.id.text)
+                textForResult.visibility = View.VISIBLE
+                predictNowBtn.visibility = View.GONE
+                val userPredictionDetail = v.findViewById<TextView>(R.id.userPredictionDetail)
+                userPredictionDetail.visibility = View.VISIBLE
+
             }
         }.start()
 
         return v
+
     }
 
     private fun showDialogBox(activity: Activity, imgTeam1: String, imgTeam2: String){

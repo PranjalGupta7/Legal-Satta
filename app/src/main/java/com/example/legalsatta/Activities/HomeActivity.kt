@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+//import androidx.navigation.findNavController
+//import androidx.navigation.ui.setupWithNavController
 import com.example.legalsatta.Fragments.HomeScreen
 import com.example.legalsatta.Fragments.LeaderBoard
 import com.example.legalsatta.Fragments.UserProfile

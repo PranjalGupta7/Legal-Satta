@@ -11,6 +11,25 @@ data class LatestMatchs(
 	val status: String? = null
 )
 
+data class Results(
+
+	@field:SerializedName("date")
+	val date: Int? = null,
+
+	@field:SerializedName("winner")
+	val winner: Any? = null,
+
+	@field:SerializedName("team1")
+	val team1: Team? = null,
+
+	@field:SerializedName("team2")
+	val team2: Team? = null,
+
+	@field:SerializedName("id")
+	val id: String? = null
+)
+
+
 data class Team(
 
 	@field:SerializedName("coverimg")
@@ -26,20 +45,4 @@ data class Team(
 	val id: String? = null
 )
 
-data class Results(
 
-	@field:SerializedName("date")
-	val date: String? = null,
-
-	@field:SerializedName("winner")
-	val winner: Any? = null,
-
-	@field:SerializedName("team1")
-	val team1: Team? = null,
-
-	@field:SerializedName("team2")
-	val team2: Team? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null
-)
