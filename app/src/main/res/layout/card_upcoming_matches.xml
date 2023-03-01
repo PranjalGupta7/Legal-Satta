@@ -5,57 +5,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="10dp"
     app:cardCornerRadius="10dp"
-    android:layout_margin="16dp">
+    android:layout_margin="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:padding="16dp"
         >
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="SAT, 25 MARCH"
-        android:textColor="@color/navy_blue"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="SAT, 25 MARCH"
+            android:textColor="@color/navy_blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/upcomingTeamImg1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground"
             android:layout_margin="10dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date"
-            />
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
         <ImageView
             android:id="@+id/upcomingTeamImg2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground"
             android:layout_margin="10dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date"
-            />
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="V/S"
             android:textColor="@color/navy_blue"
             android:textStyle="bold"
             android:textSize="28sp"
-            app:layout_constraintTop_toBottomOf="@id/date"
+            app:layout_constraintTop_toTopOf="@id/upcomingTeamImg1"
+            app:layout_constraintBottom_toBottomOf="@id/upcomingTeamImg2"
             app:layout_constraintStart_toEndOf="@id/upcomingTeamImg1"
+            app:layout_constraintEnd_toStartOf="@id/upcomingTeamImg2"
             android:gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_margin="40dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

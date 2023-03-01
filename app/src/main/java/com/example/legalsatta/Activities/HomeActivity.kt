@@ -27,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
 //        val navController = this.findNavController(R.id.homeNavFrame)
 
 //        homeBottomNavigator.setupWithNavController(navController)
+        frameTransaction(HomeScreen())
         homeBottomNavigator.setOnItemSelectedListener{ menuItem: MenuItem ->
             when(menuItem.itemId){
                 R.id.home_fragment-> {

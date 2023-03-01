@@ -3,31 +3,28 @@ package com.example.legalsatta.Fragments
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.legalsatta.Interface.UrlEndpoints
+import com.example.legalsatta.Models.Results
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
-import retrofit2.Retrofit
+import okhttp3.internal.UTC
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,18 +42,33 @@ class HomeScreen : Fragment() {
         val teamImg2 = v.findViewById<ImageView>(R.id.teamImg2)
         val predictNowBtn = v.findViewById<TextView>(R.id.predictNowBtn)
         val retrofit = RetrofitClass.buildService()
+        val matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
+        val mainCard = v.findViewById<View>(R.id.mainCard)
+        val mainCardProgressBar = v.findViewById<ProgressBar>(R.id.mainCardProgressBar)
+        val recyclerViewProgressBar = v.findViewById<ProgressBar>(R.id.recyclerViewProgressBar)
 
+        val c = context
         var imgTeam1: String? = null
         var imgTeam2: String? = null
 
+
+
+        matchesListView.layoutManager = LinearLayoutManager(context)
+        Log.d("RespoCheck","No response")
+
         lifecycleScope.launchWhenCreated {
             try {
+                mainCardProgressBar.visibility = View.GONE
                 val response= retrofit.getLatestMatch()
                 if (response.isSuccessful) {
-                    imgTeam1 =  response.body()?.result?.team1?.get(0)?.coverimg.toString()
-                    imgTeam2 =  response.body()?.result?.team1?.get(0)?.coverimg.toString()
-                    setImage(teamImg1, imgTeam1!!)
-                    setImage(teamImg2, imgTeam2!!)
+                    imgTeam1 =  response.body()?.result?.team1?.coverimg.toString()
+                    imgTeam2 =  response.body()?.result?.team2?.coverimg.toString()
+                    Log.d("RespoCheck","Got response")
+                    setImage(c, teamImg1, imgTeam1!!)
+                    setImage(c, teamImg2, imgTeam2!!)
+                    predictNowBtn.setOnClickListener {
+                        activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!) }
+                    }
                 }
                 else {
                     Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
@@ -66,11 +78,22 @@ class HomeScreen : Fragment() {
             }
         }
 
-
-
-        predictNowBtn.setOnClickListener {
-            activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!) }
+        lifecycleScope.launchWhenCreated {
+            try {
+                recyclerViewProgressBar.visibility = View.GONE
+                val response = retrofit.getUpcomingMatches()
+                if(response.isSuccessful){
+                    val upcomingList = response.body()?.result as ArrayList<Results>
+                    matchesListView.adapter = context?.let { upcomingMatchesAdapter(it, upcomingList)}
+                }
+                else
+                    Toast.makeText(context, "Response Not Received", Toast.LENGTH_SHORT).show()
+            }
+            catch (e: Exception){
+                Log.e("Error",e.localizedMessage)
+            }
         }
+
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
 
@@ -81,8 +104,6 @@ class HomeScreen : Fragment() {
          var epoch = now2.timeInMillis
          var timeForCountDown = epoch - currentTime ;
 
-        Log.d("------", currentTime.toString())
-        Log.d("-----t", timeForCountDown.toString())
 
         object : CountDownTimer(timeForCountDown, 1000) {
 
@@ -101,10 +122,6 @@ class HomeScreen : Fragment() {
             }
         }.start()
 
-        var matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
-        matchesListView .layoutManager = LinearLayoutManager(context)
-//        matchesListView .adapter = upcomingMatchesAdapter(context, //list)
-//        )
         return v
     }
 
@@ -116,13 +133,15 @@ class HomeScreen : Fragment() {
         val team2 = dialog.findViewById<ImageView>(R.id.dialog_team2)
         val dialog_cnf_btn = dialog.findViewById<TextView>(R.id.dialog_cnf_btn)
 
-        setImage(team1,imgTeam1)
-        setImage(team2,imgTeam2)
+        setImage(context,team1, imgTeam1)
+        setImage(context,team2, imgTeam2)
         team1.setOnClickListener {
+            Log.d("clickedT1","click")
             team1.background = resources.getDrawable(R.drawable.orange_stroke_boder)
             team2.background = null
         }
         team2.setOnClickListener {
+            Log.d("clickedT1","click")
             team2.background = resources.getDrawable(R.drawable.orange_stroke_boder)
             team1.background = null
         }
@@ -133,15 +152,7 @@ class HomeScreen : Fragment() {
 
     }
 
-    private fun setImage(imageView: ImageView, imgURl: String){
-        Glide
-            .with(this)
-            .load(imgURl)
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(imageView)
-    }
-
-    class upcomingMatchesAdapter(var context: Context, var MatchList: ArrayList<UpcomingMatches>) : RecyclerView.Adapter<upcomingMatchesAdapter.MatchViewHolder>(){
+    class upcomingMatchesAdapter(var context: Context, var MatchList: ArrayList<Results>) : RecyclerView.Adapter<upcomingMatchesAdapter.MatchViewHolder>(){
 
         class MatchViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
             var matchDateTextView = itemView.findViewById<TextView>(R.id.date)
@@ -163,11 +174,26 @@ class HomeScreen : Fragment() {
 
         override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
             var matchModel =  MatchList.get(position)
-            holder.matchDateTextView.text = matchModel.date
-            holder.teamAImg.setImageResource(matchModel.teamA)
-            holder.teamBImg.setImageResource(matchModel.teamB)
+            holder.matchDateTextView.text = getDate(matchModel.date.toString())
+            setImage(context, holder.teamAImg, matchModel.team1?.coverimg.toString())
+            setImage(context, holder.teamBImg, matchModel.team2?.coverimg.toString())
         }
     }
+
 }
 
-data class UpcomingMatches(val id: Int, val date: String, val teamA: Int, val teamB: Int)
+private fun setImage(context: Context?, imageView: ImageView, imgURl: String){
+    Glide
+        .with(context!!)
+        .load(imgURl)
+        .fitCenter()
+        .placeholder(R.drawable.ic_launcher_foreground)
+        .into(imageView)
+}
+
+fun getDate(timeInMillis: String): String{
+    val sdf = SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH)
+    val c = Calendar.getInstance()
+    c.timeInMillis = Integer.parseInt(timeInMillis).toLong()
+    return sdf.format(c.time).toString()
+}

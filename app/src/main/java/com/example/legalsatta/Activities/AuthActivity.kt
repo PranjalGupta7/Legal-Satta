@@ -11,11 +11,11 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.authFrame, LoginFragment())
-            .commit()
+//        supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.authFrame, LoginFragment())
+//            .commit()
 
-//        startActivity(Intent(this, HomeActivity::class.java))
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 }

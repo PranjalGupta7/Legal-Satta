@@ -1,10 +1,7 @@
 package com.example.legalsatta.Interface
 
 import android.database.Observable
-import com.example.legalsatta.Models.LatestMatchs
-import com.example.legalsatta.Models.RegistrationModel
-import com.example.legalsatta.Models.TokenModel
-import com.example.legalsatta.Models.UsernameVerificationModel
+import com.example.legalsatta.Models.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,8 +20,9 @@ interface UrlEndpoints {
     @GET("/match/latest")
     suspend fun getLatestMatch() : Response<LatestMatchs>
 
-//    @GET("/match/upcoming")
-//    suspend fun getUpcomingMatches(): Response<>
+    @GET("/match/upcoming")
+    suspend fun getUpcomingMatches(): Response<UpcomingMatchesResponseModel>
+
     @POST("/auth/login")
     suspend fun postLoginDetails(@Body userLoginModel: LoginModel): Response<TokenModel>
 

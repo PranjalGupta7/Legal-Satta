@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 data class LatestMatchs(
 
 	@field:SerializedName("result")
-	val result: Result? = null,
+	val result: Results? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null
 )
 
-data class Team1Item(
+data class Team(
 
 	@field:SerializedName("coverimg")
 	val coverimg: String? = null,
@@ -26,22 +26,7 @@ data class Team1Item(
 	val id: String? = null
 )
 
-data class Team2Item(
-
-	@field:SerializedName("coverimg")
-	val coverimg: String? = null,
-
-	@field:SerializedName("rate")
-	val rate: Int? = null,
-
-	@field:SerializedName("name")
-	val name: String? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null
-)
-
-data class Result(
+data class Results(
 
 	@field:SerializedName("date")
 	val date: String? = null,
@@ -50,10 +35,10 @@ data class Result(
 	val winner: Any? = null,
 
 	@field:SerializedName("team1")
-	val team1: List<Team1Item?>? = null,
+	val team1: Team? = null,
 
 	@field:SerializedName("team2")
-	val team2: List<Team2Item?>? = null,
+	val team2: Team? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null
