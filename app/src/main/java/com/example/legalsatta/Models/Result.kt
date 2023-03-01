@@ -1,6 +1,6 @@
 package com.example.legalsatta.Models
 
-data class Result(
+data class LeaderBoardResult(
     val score: Int,
     val username: String
 )
