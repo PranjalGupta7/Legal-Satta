@@ -105,8 +105,7 @@ class RegisterFragment : Fragment() {
     }
 
     fun registerUser(userData: RegistrationModel) {
-
-
+        
         lifecycleScope.launchWhenCreated {
             try {
                 val response = RetrofitClass.buildService().postRegistrationDetails(userData)
