@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.legalsatta.Models.PredictionRequestModel
 import com.example.legalsatta.Models.Results
+
 import com.example.legalsatta.Models.Team
 import com.example.legalsatta.Models.loginedUser
 import kotlinx.coroutines.CoroutineScope

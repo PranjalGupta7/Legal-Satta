@@ -17,7 +17,6 @@
             android:id="@+id/leaderBoard_title"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@drawable/air_frame"
             android:text="Leaderboard"
             android:textStyle="bold"
             android:textColor="@color/teal_700"
