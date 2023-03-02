@@ -22,11 +22,13 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        findViewById<TextView>(R.id.home_score).text = loginedUser.score.toString()
+
+//        findViewById<TextView>(R.id.home_score).text = loginedUser.score.toString()
         val homeBottomNavigator = findViewById<BottomNavigationView>(R.id.homeBottomNavigator)
 //        val navController = this.findNavController(R.id.homeNavFrame)
 
 //        homeBottomNavigator.setupWithNavController(navController)
+
         frameTransaction(HomeScreen())
         homeBottomNavigator.setOnItemSelectedListener{ menuItem: MenuItem ->
             when(menuItem.itemId){
@@ -45,7 +47,6 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        val f = HomeScreen()
     }
 
     fun frameTransaction(fragment: Fragment) {

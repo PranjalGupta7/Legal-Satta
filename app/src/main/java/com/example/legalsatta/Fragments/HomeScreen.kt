@@ -4,13 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.CalendarContract.Colors
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -24,13 +28,9 @@ import com.bumptech.glide.Glide
 import com.example.legalsatta.Models.PredictionRequestModel
 import com.example.legalsatta.Models.Results
 import com.example.legalsatta.Models.Team
-import com.example.legalsatta.R
-import com.example.legalsatta.Services.RetrofitClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
-import okhttp3.internal.UTC
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
 import java.text.DecimalFormat
@@ -38,7 +38,6 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.coroutines.coroutineContext
 
 
 class HomeScreen : Fragment() {
@@ -55,13 +54,13 @@ class HomeScreen : Fragment() {
         val predictNowBtn = v.findViewById<TextView>(R.id.predictNowBtn)
         val retrofit = RetrofitClass.buildService()
         val matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
+        val middleStatement = v.findViewById<TextView>(R.id.middleStatement)
         val mainCard = v.findViewById<View>(R.id.mainCard)
         val recyclerViewProgressBar = v.findViewById<ProgressBar>(R.id.recyclerViewProgressBar)
 
         val c = context
         var imgTeam1: String? = null
         var imgTeam2: String? = null
-
 
 
         matchesListView.layoutManager = LinearLayoutManager(context)
@@ -77,6 +76,10 @@ class HomeScreen : Fragment() {
                     Log.d("RespoCheck","Got response")
                     setImage(c, teamImg1, imgTeam1!!)
                     setImage(c, teamImg2, imgTeam2!!)
+
+                    teamImg1.startAnimation(AnimationUtils.loadAnimation(c, R.anim.translate_right))
+                    teamImg2.startAnimation(AnimationUtils.loadAnimation(c, R.anim.transalte_left))
+                    middleStatement.animation = AnimationUtils.loadAnimation(c, R.anim.zoom_out)
 
                     predictNowBtn.setOnClickListener {
                         activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!, currentMatchDetails) }
@@ -105,6 +108,8 @@ class HomeScreen : Fragment() {
                 Log.e("Error",e.localizedMessage)
             }
         }
+
+        cardAt8pm()
 
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
@@ -162,6 +167,8 @@ class HomeScreen : Fragment() {
         val dialog = Dialog(activity)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dailog_box_team_selection)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         val team1 = dialog.findViewById<ImageView>(R.id.dialog_team1)
         val team2 = dialog.findViewById<ImageView>(R.id.dialog_team2)
         val dialog_cnf_btn = dialog.findViewById<TextView>(R.id.dialog_cnf_btn)
@@ -250,5 +257,14 @@ suspend fun confirmPrediction(context: Context?, currentSelection: Team, matchId
     }
     catch (e: Exception){
         Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
+    }
+}
+
+private fun cardAt8pm(){
+    val c = Calendar.getInstance()
+    c.set(c.time.year, c.time.month, c.time.date, 20, 0, 0)
+
+    if(Calendar.getInstance().compareTo(c) >= 0){
+
     }
 }

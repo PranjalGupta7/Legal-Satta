@@ -127,7 +127,9 @@ class RegisterFragment : Fragment() {
                         Context.MODE_PRIVATE
                     )?.edit()
 
-                    pref?.putString("token", token)?.commit()
+                    pref?.putString("token", token)
+                    pref?.commit()
+
                     startActivity(Intent(context, HomeActivity::class.java))
 
                 }

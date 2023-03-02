@@ -18,28 +18,7 @@ import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
 import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-//    }
 
     private lateinit var v: View
 
@@ -50,15 +29,6 @@ class LoginFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_login, container, false)
         val loginBtn = v.findViewById<TextView>(R.id.loginBtn)
         val loginToRegisterBtn = v.findViewById<TextView>(R.id.loginToRegisterBtn)
-//        val sharedPef = activity?.getSharedPreferences(
-//            getString(R.string.preference_file_key),
-//            Context.MODE_PRIVATE
-//        )
-
-        checkUserAlreadyExists()
-
-//        Log.d("Email", sharedPef?.getString("Email", null).toString())
-//        Log.d("Password", sharedPef?.getString("Password", null).toString())
 
         loginBtn?.setOnClickListener {
 
