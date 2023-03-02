@@ -94,6 +94,7 @@ class LoginFragment : Fragment() {
                 if (token != null) {
                     response = retroService.verifyUser(TokenBody(token));
                 } else {
+                    Log.i("TAG", "loginUser: ")
                     response = retroService.postLoginDetails(userData!!)
                 }
                 if (response.isSuccessful) {
@@ -105,7 +106,7 @@ class LoginFragment : Fragment() {
                         Context.MODE_PRIVATE
                     )?.edit()
 
-                    pref?.putString("token", token)
+                    pref?.putString("token", token)?.commit()
 //                    var intent=Intent(context,HomeActivity::class.java)
 //                    intent.put
                     loginedUser = response.body()!!.user
