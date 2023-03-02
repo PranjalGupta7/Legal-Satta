@@ -5,7 +5,7 @@
     <color name="dark_red">#d62828</color>
     <color name="navy_blue">#003049</color>
     <color name="dark_orange">#f77f00</color>
-    <color name="off_white">#eae2b7</color>
+    <color name="off_white">#f2f2f2</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
@@ -13,6 +13,7 @@
     <color name="green">#39FF00</color>
     <color name="light_black">#9F8C8A8A</color>
     <color name="gold">#efbf4f</color>
+    <color name="grey">#BFC9CA</color>
     <color name="silver">#dfdfdf</color>
     <color name="bronze">#FFba8c</color>
 </resources>

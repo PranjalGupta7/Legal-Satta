@@ -113,8 +113,7 @@ class RegisterFragment : Fragment() {
     }
 
     fun registerUser(userData: RegistrationModel) {
-
-
+        
         lifecycleScope.launchWhenCreated {
             try {
                 val response = RetrofitClass.buildService().postRegistrationDetails(userData)
@@ -128,7 +127,9 @@ class RegisterFragment : Fragment() {
                         Context.MODE_PRIVATE
                     )?.edit()
 
-                    pref?.putString("token", token)?.commit()
+                    pref?.putString("token", token)
+                    pref?.commit()
+
                     startActivity(Intent(context, HomeActivity::class.java))
 
                 }

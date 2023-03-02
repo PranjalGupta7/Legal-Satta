@@ -29,11 +29,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
+                android:fontFamily="@font/alfa_slab_one"
                 android:gravity="center"
                 android:text="Legal Satta"
                 android:textColor="@color/dark_red"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textSize="30dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -54,9 +54,10 @@
                     android:id="@+id/home_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/bevan"
                     android:text="0"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -80,6 +81,9 @@
         android:id="@+id/homeNavFrame"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@drawable/frame_bg"
+        android:backgroundTintMode="src_atop"
+        android:backgroundTint="#48FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mainAppBar"

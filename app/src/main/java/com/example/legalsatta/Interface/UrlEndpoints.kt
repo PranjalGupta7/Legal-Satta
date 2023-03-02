@@ -29,6 +29,8 @@ interface UrlEndpoints {
     @GET("/leaderboard/get")
     suspend fun getLeaderBoardList(): Response<LeaderBoardUserListModel>
 
+    @POST("/user/predict")
+    suspend fun setUserPrediction(@Body prediction: PredictionRequestModel): Response<PredictedTeamResponseModel>
     @POST("/auth/verify")
     suspend fun verifyUser(@Body tokenBody: TokenBody): Response<GetUser>
 

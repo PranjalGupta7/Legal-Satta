@@ -17,6 +17,7 @@
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/holtwood_one_sc"
             android:gravity="center"
             android:text="SAT, 25 MARCH"
             android:textColor="@color/navy_blue"
@@ -30,9 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_marginEnd="35dp"
             android:padding="2dp"
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date" />
 
@@ -45,22 +48,23 @@
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toBottomOf="@id/date" />
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:fontFamily="@font/holtwood_one_sc"
+            android:gravity="center"
             android:text="V/S"
             android:textColor="@color/navy_blue"
-            android:textStyle="bold"
             android:textSize="28sp"
-            app:layout_constraintTop_toTopOf="@id/upcomingTeamImg1"
             app:layout_constraintBottom_toBottomOf="@id/upcomingTeamImg2"
-            app:layout_constraintStart_toEndOf="@id/upcomingTeamImg1"
-            app:layout_constraintEnd_toStartOf="@id/upcomingTeamImg2"
-            android:gravity="center"
-            android:layout_margin="40dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/upcomingTeamImg1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

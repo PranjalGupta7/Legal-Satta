@@ -4,24 +4,34 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.CalendarContract.Colors
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.legalsatta.Models.PredictionRequestModel
 import com.example.legalsatta.Models.Results
+
+import com.example.legalsatta.Models.Team
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
 import java.text.DecimalFormat
@@ -33,7 +43,6 @@ import kotlin.collections.ArrayList
 
 class HomeScreen : Fragment() {
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
 
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +55,8 @@ class HomeScreen : Fragment() {
         val predictNowBtn = v.findViewById<TextView>(R.id.predictNowBtn)
         val retrofit = RetrofitClass.buildService()
         val matchesListView = v.findViewById<RecyclerView>(R.id.recycleViewUpcomingMatches)
+        val middleStatement = v.findViewById<TextView>(R.id.middleStatement)
         val mainCard = v.findViewById<View>(R.id.mainCard)
-//        val mainCardProgressBar = v.findViewById<ProgressBar>(R.id.mainCardProgressBar)
         val recyclerViewProgressBar = v.findViewById<ProgressBar>(R.id.recyclerViewProgressBar)
 
         val c = context
@@ -55,28 +64,27 @@ class HomeScreen : Fragment() {
         var imgTeam2: String? = null
 
 
-
         matchesListView.layoutManager = LinearLayoutManager(context)
         Log.d("RespoCheck","No response")
 
         lifecycleScope.launchWhenCreated {
             try {
-//                mainCardProgressBar.visibility = View.GONE
                 val response= retrofit.getLatestMatch()
                 if (response.isSuccessful) {
-
-                    imgTeam1 =  response.body()?.result?.team1?.coverimg.toString()
-                    imgTeam2 =  response.body()?.result?.team2?.coverimg.toString()
+                    val currentMatchDetails = response.body()?.result!!
+                    imgTeam1 =  currentMatchDetails.team1?.coverimg.toString()
+                    imgTeam2 =  currentMatchDetails.team2?.coverimg.toString()
                     Log.d("RespoCheck","Got response")
                     setImage(c, teamImg1, imgTeam1!!)
                     setImage(c, teamImg2, imgTeam2!!)
+
+                    teamImg1.startAnimation(AnimationUtils.loadAnimation(c, R.anim.translate_right))
+                    teamImg2.startAnimation(AnimationUtils.loadAnimation(c, R.anim.transalte_left))
+                    middleStatement.animation = AnimationUtils.loadAnimation(c, R.anim.zoom_out)
+
                     predictNowBtn.setOnClickListener {
-                        activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!) }
+                        activity?.let { it1 -> showDialogBox(it1, imgTeam1!!, imgTeam2!!, currentMatchDetails) }
                     }
-
-                    setImage(context, teamImg1, response.body()?.result?.team1?.coverimg.toString())
-                    setImage(context, teamImg2, response.body()?.result?.team2?.coverimg.toString())
-
                 }
                 else {
                     Toast.makeText(context, response.errorBody().toString(), Toast.LENGTH_LONG).show()
@@ -85,7 +93,6 @@ class HomeScreen : Fragment() {
                 Log.e("Error",e.localizedMessage)
             }
         }
-
 
         lifecycleScope.launchWhenCreated {
             try {
@@ -103,6 +110,9 @@ class HomeScreen : Fragment() {
             }
         }
 
+        cardAt8pm(v)
+
+
         var timerTextView = v.findViewById<TextView>(R.id.timer)
 
          var currentTime = System.currentTimeMillis();
@@ -111,7 +121,6 @@ class HomeScreen : Fragment() {
          now2.set(now1.weekYear, now1.time.month, now1.time.date, 16, 30,0)
          var epoch = now2.timeInMillis
          var timeForCountDown = epoch - currentTime ;
-
 
 
         object : CountDownTimer(timeForCountDown, 1000) {
@@ -126,7 +135,6 @@ class HomeScreen : Fragment() {
                 timerTextView.setText(
                     (f.format(hour) + ":" + f.format(min)).toString() + ":" + f.format(sec)
                 )
-
             }
             override fun onFinish() {
 
@@ -154,31 +162,37 @@ class HomeScreen : Fragment() {
         }.start()
 
         return v
-
     }
 
-    private fun showDialogBox(activity: Activity, imgTeam1: String, imgTeam2: String){
+    private fun showDialogBox(activity: Activity, imgTeam1: String, imgTeam2: String,currentMatchData: Results){
         val dialog = Dialog(activity)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dailog_box_team_selection)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         val team1 = dialog.findViewById<ImageView>(R.id.dialog_team1)
         val team2 = dialog.findViewById<ImageView>(R.id.dialog_team2)
         val dialog_cnf_btn = dialog.findViewById<TextView>(R.id.dialog_cnf_btn)
+        var selectedTeam: Team? = null;
 
         setImage(context,team1, imgTeam1)
         setImage(context,team2, imgTeam2)
         team1.setOnClickListener {
-            Log.d("clickedT1","click")
-            team1.background = resources.getDrawable(R.drawable.orange_stroke_boder)
+            selectedTeam = currentMatchData.team1!!
+            team1.background = ResourcesCompat.getDrawable(resources, R.drawable.orange_stroke_boder, null)
             team2.background = null
         }
         team2.setOnClickListener {
-            Log.d("clickedT1","click")
-            team2.background = resources.getDrawable(R.drawable.orange_stroke_boder)
+            selectedTeam = currentMatchData.team2!!
+            team2.background = ResourcesCompat.getDrawable(resources, R.drawable.orange_stroke_boder,null)
             team1.background = null
         }
         dialog_cnf_btn.setOnClickListener {
-            dialog.dismiss()
+            if(selectedTeam!=null)
+                CoroutineScope(Dispatchers.IO).launch {
+                    confirmPrediction(context, selectedTeam!!, currentMatchData.id.toString())
+                    dialog.dismiss()
+                }
         }
         dialog.show()
 
@@ -228,4 +242,43 @@ fun getDate(timeInMillis: String): String{
     val c = Calendar.getInstance()
     c.timeInMillis = Integer.parseInt(timeInMillis).toLong()
     return sdf.format(c.time).toString()
+}
+
+suspend fun confirmPrediction(context: Context?, currentSelection: Team, matchId: String){
+    try {
+        val requestBody = PredictionRequestModel("", currentSelection.id.toString(), matchId)
+        val response = RetrofitClass.buildService().setUserPrediction(requestBody)
+        if (response.isSuccessful){
+            if(response.body()?.status == "success"){
+
+            }
+            else
+                Toast.makeText(context, "Error Occurred Retry Later", Toast.LENGTH_SHORT).show()
+        }
+    }
+    catch (e: Exception){
+        Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
+    }
+}
+
+private fun cardAt8pm(v: View){
+    val cardAfter8pm  = v.findViewById<View>(R.id.cardAfter8pm)
+    val cardBefore8pm  = v.findViewById<View>(R.id.cardBefore8pm)
+    val viewReultsBtn = v.findViewById<View>(R.id.viewResultsBtn)
+
+    val c = Calendar.getInstance()
+    c.set(c.time.year, c.time.month, c.time.date, 20, 0, 0)
+
+    if(Calendar.getInstance().compareTo(c) >= 0){
+        cardAfter8pm.visibility = View.VISIBLE
+        cardBefore8pm.visibility = View.GONE
+
+        viewReultsBtn.setOnClickListener {
+            resultDialogBox()
+        }
+    }
+}
+
+private fun resultDialogBox() {
+
 }
