@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
             try {
                 val retroService = RetrofitClass.buildService()
                 if (token != null) {
-                    response = retroService.verifyUser(TokenBody(token));
+                    response = retroService.verifyUser(TokenBody(token))
                 } else {
                     Log.i("TAG", "loginUser: ")
                     response = retroService.postLoginDetails(userData!!)

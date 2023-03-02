@@ -114,12 +114,12 @@ class HomeScreen : Fragment() {
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
 
-         var currentTime = System.currentTimeMillis();
-         val now1 = Calendar.getInstance()
+         var currentTime = System.currentTimeMillis()
+        val now1 = Calendar.getInstance()
          val now2 = Calendar.getInstance()
          now2.set(now1.weekYear, now1.time.month, now1.time.date, 16, 30,0)
          var epoch = now2.timeInMillis
-         var timeForCountDown = epoch - currentTime ;
+         var timeForCountDown = epoch - currentTime
 
 
         object : CountDownTimer(timeForCountDown, 1000) {
@@ -131,13 +131,11 @@ class HomeScreen : Fragment() {
                 val hour = millisUntilFinished / 3600000 % 24
                 val min = millisUntilFinished / 60000 % 60
                 val sec = millisUntilFinished / 1000 % 60
-                timerTextView.setText(
-                    (f.format(hour) + ":" + f.format(min)).toString() + ":" + f.format(sec)
-                )
+                timerTextView.text = (f.format(hour) + ":" + f.format(min)).toString() + ":" + f.format(sec)
             }
             override fun onFinish() {
 
-                var currentTime = System.currentTimeMillis();
+                var currentTime = System.currentTimeMillis()
                 val now1 = Calendar.getInstance()
                 val now2 = Calendar.getInstance()
                 now2.set(now1.weekYear, now1.time.month, now1.time.date, 20, 0,0)
@@ -172,7 +170,7 @@ class HomeScreen : Fragment() {
         val team1 = dialog.findViewById<ImageView>(R.id.dialog_team1)
         val team2 = dialog.findViewById<ImageView>(R.id.dialog_team2)
         val dialog_cnf_btn = dialog.findViewById<TextView>(R.id.dialog_cnf_btn)
-        var selectedTeam: Team? = null;
+        var selectedTeam: Team? = null
 
         setImage(context,team1, imgTeam1)
         setImage(context,team2, imgTeam2)

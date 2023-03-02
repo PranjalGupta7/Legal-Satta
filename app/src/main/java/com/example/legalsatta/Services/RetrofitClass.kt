@@ -1,6 +1,7 @@
 package com.example.legalsatta.Services
 
-import com.example.legalsatta.Interface.UrlEndpoints
+//import com.example.legalsatta.Interface.UrlEndpoints
+import UrlEndpoints
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

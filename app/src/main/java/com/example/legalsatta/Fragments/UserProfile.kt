@@ -3,6 +3,7 @@ package com.example.legalsatta.Fragments
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,12 @@ import com.example.legalsatta.R
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
+import com.example.legalsatta.Models.User
+import com.example.legalsatta.Models.loginedUser
+import com.example.legalsatta.R
+import com.example.legalsatta.Services.RetrofitClass
 
 
 class UserProfile : Fragment() {
@@ -43,6 +50,35 @@ class UserProfile : Fragment() {
 
 
         return v
+        // Inflate the layout for this fragment
+        var view = inflater.inflate(R.layout.fragment_user_profile, container, false)
+        view.findViewById<TextView>(R.id.profileUserName).text = loginedUser.username
+        view.findViewById<TextView>(R.id.profileUserEmail).text = loginedUser.email
+        getPredictionHistory(
+            loginedUser,
+            view.findViewById<TextView>(R.id.profileTotalPlayed),
+            view.findViewById<TextView>(R.id.profileWins)
+        )
+
+        return view
+    }
+
+    fun getPredictionHistory(userData: User, profileTotalPlayed: TextView, profileWin: TextView) {
+
+        lifecycleScope.launchWhenCreated {
+            try {
+                val response = RetrofitClass.buildService().getPredictionHistory(userData)
+                if (response.isSuccessful) {
+
+
+                    profileTotalPlayed.text = response?.body()?.result?.totalPredictions.toString()
+                    profileWin.text = response?.body()?.result?.winPredictions.toString()
+
+                }
+            } catch (e: Exception) {
+                Log.e("Error", e.localizedMessage)
+            }
+        }
     }
 }
 

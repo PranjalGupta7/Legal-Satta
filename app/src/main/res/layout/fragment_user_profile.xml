@@ -86,6 +86,7 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/winLayout"
                 app:layout_constraintBottom_toBottomOf="parent">
 
                 <TextView
@@ -115,7 +116,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/lostLayout"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/playedLayout"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -138,34 +139,34 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/lostLayout"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/lostLayout"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Loss"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Loss"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="16dp"/>-->
 
-                <TextView
-                    android:id="@+id/profileLoss"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="16dp"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/profileLoss"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="5"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textSize="16dp"/>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

@@ -1,13 +1,10 @@
-package com.example.legalsatta.Interface
 
-import android.database.Observable
+
 import com.example.legalsatta.Models.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface UrlEndpoints {
 
@@ -34,5 +31,7 @@ interface UrlEndpoints {
     @POST("/auth/verify")
     suspend fun verifyUser(@Body tokenBody: TokenBody): Response<GetUser>
 
+    @POST("/user/prediction-history")
+    suspend fun getPredictionHistory(@Body user:User): Response<UserProfilePredictionsResponse>
 
 }

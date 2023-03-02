@@ -19,7 +19,7 @@ import com.example.legalsatta.Services.RetrofitClass
 
 
 class LeaderBoard : Fragment() {
-    lateinit var rankListView: RecyclerView;
+    lateinit var rankListView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,8 +32,8 @@ class LeaderBoard : Fragment() {
         rankListView = v.findViewById<RecyclerView>(R.id.recycleViewLeaderboard)
         rankListView.layoutManager = LinearLayoutManager(context)
 //        rankListView .adapter = leaderboardAdapter(context, //list)
-        fetchLeaderBoard();
-        return v;
+        fetchLeaderBoard()
+        return v
     }
 
     fun fetchLeaderBoard() {
@@ -86,22 +86,15 @@ class RankAdapter(var context: Context, var leaderboardList: ArrayList<LeaderBoa
     override fun onBindViewHolder(holder: RankViewHolder, position: Int) {
         var rankModel = leaderboardList.get(position)
         if (position == 0) {
-            holder.card.setBackgroundTintList(
-                context.getResources().getColorStateList(R.color.gold)
-
-            );
+            holder.card.backgroundTintList = context.resources.getColorStateList(R.color.gold)
             holder.img.setImageResource(R.drawable.first_1)
 
         } else if (position == 1) {
-            holder.card.setBackgroundTintList(
-                context.getResources().getColorStateList(R.color.silver)
-            );
+            holder.card.backgroundTintList = context.resources.getColorStateList(R.color.silver)
             holder.img.setImageResource(R.drawable.second_2)
 
         } else if (position == 2) {
-            holder.card.setBackgroundTintList(
-                context.getResources().getColorStateList(R.color.bronze)
-            );
+            holder.card.backgroundTintList = context.resources.getColorStateList(R.color.bronze)
             holder.img.setImageResource(R.drawable.third_3)
 
         }
