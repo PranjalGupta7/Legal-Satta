@@ -24,9 +24,6 @@ import com.bumptech.glide.Glide
 import com.example.legalsatta.Models.Results
 import com.example.legalsatta.R
 import com.example.legalsatta.Services.RetrofitClass
-import okhttp3.internal.UTC
-import com.example.legalsatta.R
-import com.example.legalsatta.Services.RetrofitClass
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -139,7 +136,7 @@ class HomeScreen : Fragment() {
                 now2.set(now1.weekYear, now1.time.month, now1.time.date, 20, 0,0)
                 var epochateight = now2.timeInMillis
 
-                if(epochateight == currentTime){
+                if(epochateight <= currentTime){
 
                 }
 
