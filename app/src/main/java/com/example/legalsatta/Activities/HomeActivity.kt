@@ -23,7 +23,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-//        findViewById<TextView>(R.id.home_score).text = loginedUser.score.toString()
+        findViewById<TextView>(R.id.home_score).text = loginedUser.score.toString()
         val homeBottomNavigator = findViewById<BottomNavigationView>(R.id.homeBottomNavigator)
 //        val navController = this.findNavController(R.id.homeNavFrame)
 

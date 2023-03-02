@@ -32,15 +32,21 @@ class UserProfile : Fragment() {
         val totalLosses = v.findViewById<TextView>(R.id.profileLoss)
         val userHistory = v.findViewById<RecyclerView>(R.id.profileUserBets)
 
+        val list = arrayListOf<MockBets>()
+        list.add(MockBets("1 March, 2023", "CSK", "WON", 10))
+        list.add(MockBets("28 February, 2023", "RCB", "LOST", 0))
+        list.add(MockBets("27 February, 2023", "RR", "LOST", 0))
+        list.add(MockBets("26 February, 2023", "DareDevils", "DRAW", 0))
+
         userHistory.layoutManager = LinearLayoutManager(context)
-//        userHistory.adapter = ProfileBetAdapter(context, list)
+        userHistory.adapter = ProfileBetAdapter(context, list)
 
 
         return v
     }
 }
 
-class ProfileBetAdapter(var context: Context, var listOfBets: ArrayList<MockBets>):RecyclerView.Adapter<ProfileBetAdapter.BetViewHolder>(){
+class ProfileBetAdapter(var context: Context?, var listOfBets: ArrayList<MockBets>):RecyclerView.Adapter<ProfileBetAdapter.BetViewHolder>(){
 
     class BetViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val matchDate = itemView.findViewById<TextView>(R.id.matchDate)
@@ -60,7 +66,7 @@ class ProfileBetAdapter(var context: Context, var listOfBets: ArrayList<MockBets
 
     override fun onBindViewHolder(holder: BetViewHolder, position: Int) {
         val model = listOfBets.get(position)
-        holder.matchDate.text = getDate( model.date.toString())
+        holder.matchDate.text = model.date
         holder.teamNameBettedOn.text = model.teamName
 
         holder.bettingStatus.text = model.status
@@ -73,7 +79,7 @@ class ProfileBetAdapter(var context: Context, var listOfBets: ArrayList<MockBets
 fun setColorToStatus(view: TextView){
     val status = view.text
 
-    if(status == "WIN")
+    if(status == "WON")
         view.setTextColor(Color.GREEN)
     else if(status == "LOST")
         view.setTextColor(Color.RED)
@@ -88,4 +94,4 @@ fun getDateForProfile(timeInMillis: String): String{
     return sdf.format(c.time).toString()
 }
 
-data class MockBets(var date: Int, var teamName: String, var status: String, var score: Int)
+data class MockBets(var date: String, var teamName: String, var status: String, var score: Int)

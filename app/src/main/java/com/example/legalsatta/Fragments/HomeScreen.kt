@@ -6,10 +6,8 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.provider.CalendarContract.Colors
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +27,7 @@ import com.bumptech.glide.Glide
 import com.example.legalsatta.Models.PredictionRequestModel
 import com.example.legalsatta.Models.Results
 import com.example.legalsatta.Models.Team
+import com.example.legalsatta.Models.loginedUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -109,7 +109,6 @@ class HomeScreen : Fragment() {
             }
         }
 
-        cardAt8pm(v)
 
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
@@ -143,8 +142,8 @@ class HomeScreen : Fragment() {
                 now2.set(now1.weekYear, now1.time.month, now1.time.date, 20, 0,0)
                 var epochateight = now2.timeInMillis
 
-                if(epochateight == currentTime){
-
+                if(epochateight <= currentTime){
+                     cardAt8pm(v, activity)
                 }
 
                 predictNowBtn.visibility = View.GONE
@@ -245,11 +244,11 @@ fun getDate(timeInMillis: String): String{
 
 suspend fun confirmPrediction(context: Context?, currentSelection: Team, matchId: String){
     try {
-        val requestBody = PredictionRequestModel("", currentSelection.id.toString(), matchId)
+        val requestBody = PredictionRequestModel(loginedUser.id, currentSelection.id.toString(), matchId)
         val response = RetrofitClass.buildService().setUserPrediction(requestBody)
         if (response.isSuccessful){
             if(response.body()?.status == "success"){
-
+                Toast.makeText(context, "Bet Placed", Toast.LENGTH_SHORT).show()
             }
             else
                 Toast.makeText(context, "Error Occurred Retry Later", Toast.LENGTH_SHORT).show()
@@ -260,24 +259,30 @@ suspend fun confirmPrediction(context: Context?, currentSelection: Team, matchId
     }
 }
 
-private fun cardAt8pm(v: View){
+private fun cardAt8pm(v: View, activity: FragmentActivity?){
     val cardAfter8pm  = v.findViewById<View>(R.id.cardAfter8pm)
     val cardBefore8pm  = v.findViewById<View>(R.id.cardBefore8pm)
     val viewReultsBtn = v.findViewById<View>(R.id.viewResultsBtn)
 
-    val c = Calendar.getInstance()
-    c.set(c.time.year, c.time.month, c.time.date, 20, 0, 0)
+    cardAfter8pm.visibility = View.VISIBLE
+    cardBefore8pm.visibility = View.GONE
 
-    if(Calendar.getInstance().compareTo(c) >= 0){
-        cardAfter8pm.visibility = View.VISIBLE
-        cardBefore8pm.visibility = View.GONE
-
-        viewReultsBtn.setOnClickListener {
-            resultDialogBox()
-        }
+    viewReultsBtn.setOnClickListener {
+        resultDialogBox(activity)
     }
 }
 
-private fun resultDialogBox() {
+private fun resultDialogBox(activity: FragmentActivity?) {
+    val dialog = Dialog(activity!!)
+    dialog.setCancelable(true)
+    dialog.setContentView(R.layout.results_dialog_box)
+    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+    val userStatus = dialog.findViewById<TextView>(R.id.userStatus)
+    val playersWon = dialog.findViewById<TextView>(R.id.playersWon)
+    val playersLost = dialog.findViewById<TextView>(R.id.playersLost)
+
+//    CoroutineScope(Dispatchers.Main).launch {
+//
+//    }
 }
