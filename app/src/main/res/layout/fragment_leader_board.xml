@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
+    android:background="#00FFFFFF"
     tools:context=".Fragments.LeaderBoard">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +19,7 @@
             android:layout_height="100dp"
             android:background="@drawable/flame_img"
             android:text="A . I . R."
+            android:fontFamily="@font/alfa_slab_one"
             android:textStyle="bold"
             android:textColor="@color/teal_700"
             android:textSize="40sp"
