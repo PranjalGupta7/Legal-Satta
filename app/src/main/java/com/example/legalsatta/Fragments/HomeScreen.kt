@@ -109,7 +109,7 @@ class HomeScreen : Fragment() {
             }
         }
 
-        cardAt8pm()
+        cardAt8pm(v)
 
 
         var timerTextView = v.findViewById<TextView>(R.id.timer)
@@ -260,11 +260,24 @@ suspend fun confirmPrediction(context: Context?, currentSelection: Team, matchId
     }
 }
 
-private fun cardAt8pm(){
+private fun cardAt8pm(v: View){
+    val cardAfter8pm  = v.findViewById<View>(R.id.cardAfter8pm)
+    val cardBefore8pm  = v.findViewById<View>(R.id.cardBefore8pm)
+    val viewReultsBtn = v.findViewById<View>(R.id.viewResultsBtn)
+
     val c = Calendar.getInstance()
     c.set(c.time.year, c.time.month, c.time.date, 20, 0, 0)
 
     if(Calendar.getInstance().compareTo(c) >= 0){
+        cardAfter8pm.visibility = View.VISIBLE
+        cardBefore8pm.visibility = View.GONE
 
+        viewReultsBtn.setOnClickListener {
+            resultDialogBox()
+        }
     }
+}
+
+private fun resultDialogBox() {
+
 }
